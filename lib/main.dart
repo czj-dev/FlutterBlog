@@ -3,6 +3,9 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
+import 'codeviewer/code_style.dart';
+import 'codeviewer/prehighlighter.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -72,7 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [Container(child: Text(subTitle))],
       ),
       body: Markdown(
-        data: data ?? "loading...",
+        syntaxHighlighter: DartSyntaxPrehighlighter(CodeStyle(
+          baseStyle: TextStyle(color: const Color(0xFFFAFBFB)),
+          numberStyle: TextStyle(color: const Color(0xFFBD93F9)),
+          commentStyle: TextStyle(color: const Color(0xFF808080)),
+          keywordStyle: TextStyle(color: const Color(0xFF1CDEC9)),
+          stringStyle: TextStyle(color: const Color(0xFFFFA65C)),
+          punctuationStyle: TextStyle(color: const Color(0xFF8BE9FD)),
+          classStyle: TextStyle(color: const Color(0xFFD65BAD)),
+          constantStyle: TextStyle(color: const Color(0xFFFF8383)),
+          child: Container(),
+        )),
+        data: data ?? "loading ...",
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
