@@ -100,18 +100,21 @@ class DartSyntaxPrehighlighter extends SyntaxHighlighter {
       for (final span in _spans) {
         if (currentPosition != span.start) {
           formattedText.add(CodeSpan(_codeStyle,
-              text: _src.substring(currentPosition, span.start)));
+                  text: _src.substring(currentPosition, span.start))
+              .cast());
         }
 
-        formattedText.add(CodeSpan(_codeStyle,
-            type: span.type, text: span.textForSpan(_src)));
+        formattedText.add(
+            CodeSpan(_codeStyle, type: span.type, text: span.textForSpan(_src))
+                .cast());
 
         currentPosition = span.end;
       }
 
       if (currentPosition != _src.length) {
         formattedText.add(CodeSpan(_codeStyle,
-            text: _src.substring(currentPosition, _src.length)));
+                text: _src.substring(currentPosition, _src.length))
+            .cast());
       }
 
       return TextSpan(children: formattedText);
@@ -356,6 +359,9 @@ class CodeSpan extends TextSpan {
   final _HighlightType type;
   final CodeStyle codeStyle;
   final String text;
+
+  // markdown selected function only supports TextSpan
+  TextSpan cast() => TextSpan(style: style, text: text);
 }
 
 TextStyle _styleNameOf(_HighlightType type, CodeStyle codeStyle) {

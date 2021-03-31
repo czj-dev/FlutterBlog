@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/style/theme/application_theme_data.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yaml/yaml.dart';
-
 import 'codeviewer/code_style.dart';
 import 'codeviewer/prehighlighter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:markdown/markdown.dart' as md;
 
 void main() {
   runApp(MyApp());
@@ -75,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [Container(child: Text(subTitle))],
       ),
       body: Markdown(
+        onTapLink: (String text, String href, String title) => launch(href),
+        selectable: true,
+        styleSheet:
+            MarkdownStyleSheet.fromTheme(ApplicationThemeData.lightThemeData),
         syntaxHighlighter: DartSyntaxPrehighlighter(CodeStyle(
           baseStyle: TextStyle(color: const Color(0xFFFAFBFB)),
           numberStyle: TextStyle(color: const Color(0xFFBD93F9)),
@@ -86,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           constantStyle: TextStyle(color: const Color(0xFFFF8383)),
           child: Container(),
         )),
-        data: data ?? "loading ...",
+        data: data ?? "loading...",
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
