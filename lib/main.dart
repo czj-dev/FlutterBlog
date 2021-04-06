@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     title = config["title"];
     subTitle = config["subtitle"];
 
-    // search img
+    // search img list
     RegExp imagesPattern = new RegExp(r'!\[(.*?)\]\((.*?)\)');
     Iterable<RegExpMatch> allMatches2 = imagesPattern.allMatches(content);
     int historyAddStringCount = 0;
