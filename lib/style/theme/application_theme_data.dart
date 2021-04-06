@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ApplicationThemeData {
   static const _lightFillColor = Colors.black;
@@ -18,33 +17,32 @@ class ApplicationThemeData {
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-      colorScheme: colorScheme,
-      textTheme: _textTheme,
-      // Matches manifest.json colors and background color.
-      primaryColor: const Color(0xFF030303),
-      appBarTheme: AppBarTheme(
-        textTheme: _textTheme.apply(bodyColor: colorScheme.onPrimary),
-        color: colorScheme.background,
-        elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.primary),
-        brightness: colorScheme.brightness,
-      ),
-      iconTheme: IconThemeData(color: colorScheme.onPrimary),
-      canvasColor: colorScheme.background,
-      scaffoldBackgroundColor: colorScheme.background,
-      highlightColor: Colors.transparent,
-      accentColor: colorScheme.primary,
-      focusColor: focusColor,
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Color.alphaBlend(
-          _lightFillColor.withOpacity(0.80),
-          _darkFillColor,
+        colorScheme: colorScheme,
+        textTheme: _textTheme,
+        // Matches manifest.json colors and background color.
+        primaryColor: const Color(0xFF030303),
+        appBarTheme: AppBarTheme(
+          textTheme: _textTheme.apply(bodyColor: colorScheme.onPrimary),
+          color: colorScheme.background,
+          elevation: 0,
+          iconTheme: IconThemeData(color: colorScheme.primary),
+          brightness: colorScheme.brightness,
         ),
-        contentTextStyle: _textTheme.subtitle1.apply(color: _darkFillColor),
-      ),
-      cardTheme: CardTheme(color: Colors.grey[850])
-    );
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
+        canvasColor: colorScheme.background,
+        scaffoldBackgroundColor: colorScheme.background,
+        highlightColor: Colors.transparent,
+        accentColor: colorScheme.primary,
+        focusColor: focusColor,
+        snackBarTheme: SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Color.alphaBlend(
+            _lightFillColor.withOpacity(0.80),
+            _darkFillColor,
+          ),
+          contentTextStyle: _textTheme.subtitle1?.apply(color: _darkFillColor),
+        ),
+        cardTheme: CardTheme(color: Colors.grey[850]));
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
@@ -70,7 +68,8 @@ class ApplicationThemeData {
     secondaryVariant: Color(0xFF451B6F),
     background: Color(0xFF241E30),
     surface: Color(0xFF1F1929),
-    onBackground: Color(0x0DFFFFFF), // White with 0.05 opacity
+    onBackground: Color(0x0DFFFFFF),
+    // White with 0.05 opacity
     error: _darkFillColor,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,
@@ -85,19 +84,33 @@ class ApplicationThemeData {
   static const _bold = FontWeight.w700;
 
   static final TextTheme _textTheme = TextTheme(
-    headline1: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 36.0,),
-    headline2: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 32.0),
-    headline3: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 38.0),
-    headline4: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 26.0),
-    headline5: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 24.0),
-    headline6: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 20.0),
-    subtitle1: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 18.0),
-    subtitle2: GoogleFonts.notoSans(fontWeight: _bold, fontSize: 16.0),
-    caption: GoogleFonts.notoSans(fontWeight: _semiBold, fontSize: 16.0),
-    overline: GoogleFonts.notoSans(fontWeight: _medium, fontSize: 12.0),
-    bodyText1: GoogleFonts.notoSerif(fontWeight: _regular, fontSize: 14.0),
-    bodyText2: GoogleFonts.notoSerif(fontWeight: _regular, fontSize: 16.0),
-    button: GoogleFonts.notoSans(fontWeight: _semiBold, fontSize: 14.0),
+    headline1: fontStyle(fontWeight: _bold, fontSize: 36.0),
+    headline2:
+        fontStyle(fontWeight: _bold, fontSize: 32.0),
+    headline3:
+        fontStyle(fontWeight: _bold, fontSize: 38.0),
+    headline4:
+        fontStyle(fontWeight: _bold, fontSize: 26.0),
+    headline5:
+        fontStyle(fontWeight: _bold, fontSize: 24.0),
+    headline6:
+        fontStyle(fontWeight: _bold, fontSize: 20.0),
+    subtitle1:
+        fontStyle(fontWeight: _bold, fontSize: 18.0),
+    subtitle2:
+        fontStyle(fontWeight: _bold, fontSize: 16.0),
+    caption:
+        fontStyle(fontWeight: _semiBold, fontSize: 16.0),
+    overline:
+        fontStyle(fontWeight: _medium, fontSize: 12.0),
+    bodyText1: fontStyle(fontWeight: _regular, fontSize: 14.0),
+    bodyText2: fontStyle(fontWeight: _regular, fontSize: 16.0),
+    button:
+        fontStyle(fontWeight: _semiBold, fontSize: 14.0),
   );
 
+  static TextStyle fontStyle(
+          {required FontWeight fontWeight, required double fontSize}) =>
+      TextStyle(
+          fontWeight: fontWeight, fontSize: fontSize, fontFamily: "FiraCode");
 }
