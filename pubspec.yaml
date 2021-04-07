@@ -69,7 +69,6 @@ flutter:
   assets:
     - README.md
     - static/images/
-    - google_fonts/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

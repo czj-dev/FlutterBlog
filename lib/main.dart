@@ -9,6 +9,8 @@ import 'codeviewer/prehighlighter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:markdown/markdown.dart' as md;
 
+import 'pages/home/index.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: HomeIndexPage(),
     );
   }
 }
