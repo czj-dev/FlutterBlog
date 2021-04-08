@@ -15,19 +15,41 @@ class _HomeIndexPageState extends State<HomeIndexPage> {
     var homeSliverHeaderFacotry = HomeSliverHeaderFacotry();
     return NestedScrollView(
         headerSliverBuilder: homeSliverHeaderFacotry.build,
-        body: ListView.builder(
+        body: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
+            var theme = Theme.of(context);
             return Container(
-              height: 80,
-              color: Colors.primaries[index % Colors.primaries.length],
-              alignment: Alignment.center,
-              child: Text(
-                '$index',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
+              color: Colors.white,
+              height: 200,
+              alignment: Alignment.topLeft,
+              child:Row(children: [
+                Expanded(child: Container()),
+                Expanded(child:  Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Flutter 深入探索", style: theme.textTheme.headline5),
+                    Text("了解 Flutter 的渲染和更新机制", style: theme.textTheme.subtitle1),
+                    Text(
+                        "数据类型 Dart 中一切都是对象，包含数字、布尔值、函数等，它们和 java 一样继承与 object，所以它们的默认值都是 Null 这点尤为需要注意，在定义数据类型的时候如 布尔 、数字类型都需要我们手动去设定业务中所需要的默认值。 常用数据类型 布尔类型（bool） 布尔类型与 C 语言一样，使用 bool 声明一个布尔类型的对象，拥有 true 和 false 两个值 ...",
+                        maxLines: isDisplayDesktop(context) ? 3 : 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyText1),
+                    Text("Posted by rank on April 30, 2020",
+                        style: theme.textTheme.bodyText1!
+                            .copyWith(color: Colors.grey))
+                  ],
+                )),Expanded(child: Container())
+              ],),
             );
           },
           itemCount: 20,
+          separatorBuilder: (BuildContext context, int index) {
+            return Container(
+              height: 1,
+              color: Colors.grey[200],
+            );
+          },
         ));
   }
 }
@@ -43,7 +65,6 @@ class HomeSliverHeaderFacotry {
     }
     return SliverAppBar(
       expandedHeight: expandedHeight,
-      pinned: true,
       flexibleSpace: HomeHeaderForegroundBar(
         title: Text("Base Station"),
         subTitle: Text("君子坐而论道,少年起而行之"),
@@ -145,11 +166,35 @@ class _HomeHeaderForegroundBarState extends State<HomeHeaderForegroundBar> {
                   ))));
         }
       }
+      final ThemeData theme = Theme.of(context);
+      // action
+      if (widget.actions != null || widget.title != null) {
+        TextStyle titleStyle = theme.primaryTextTheme.headline5!;
+        titleStyle = titleStyle.copyWith(
+            color: titleStyle.color!.withOpacity(settings.toolbarOpacity),
+            fontWeight: FontWeight.bold);
+        final List<Widget> actionList = [];
+        if (widget.title != null && isDisplayDesktop(context)) {
+          actionList
+              .add(DefaultTextStyle(style: titleStyle, child: widget.title!));
+        }
+        if (widget.actions != null) {
+          actionList.add(Spacer());
+          if (isDisplayDesktop(context)) {
+            actionList.addAll(widget.actions!);
+          } else {
+            // actionList.add(MenuData())
+          }
+        }
+        children.add(Container(
+          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          height: settings.minExtent,
+          child: Row(children: actionList),
+        ));
+      }
 
       // title
       if (widget.title != null) {
-        final ThemeData theme = Theme.of(context);
-
         Widget? title;
         switch (theme.platform) {
           case TargetPlatform.iOS:
@@ -166,7 +211,7 @@ class _HomeHeaderForegroundBarState extends State<HomeHeaderForegroundBar> {
             );
             break;
         }
-        Widget? subTitle = widget.subTitle;
+        Widget? subTitle;
         // StretchMode.fadeTitle
         if (widget.stretchModes.contains(StretchMode.fadeTitle) &&
             constraints.maxHeight > settings.maxExtent) {
@@ -178,13 +223,30 @@ class _HomeHeaderForegroundBarState extends State<HomeHeaderForegroundBar> {
             child: title,
           );
         }
-        final double stretchOpacity = 1 -
-            (((constraints.maxHeight - settings.maxExtent) / 100)
-                .clamp(0.0, 1.0));
-        subTitle = Opacity(
-          opacity: stretchOpacity,
-          child: widget.subTitle,
-        );
+        if (widget.subTitle != null) {
+          final double subTitleOpacity = 1 -
+              (((constraints.maxHeight - settings.maxExtent) / 100)
+                  .clamp(0.0, 1.0));
+          final double scaleValue =
+              Tween<double>(begin: 1.0, end: 0.0).transform(t);
+          final Matrix4 subTitleScaleTransform = Matrix4.identity()
+            ..scale(scaleValue, scaleValue, 1.0);
+          TextStyle titleStyle = theme.primaryTextTheme.bodyText1!;
+          titleStyle = titleStyle.copyWith(
+              color: titleStyle.color!.withOpacity(settings.toolbarOpacity),
+              fontSize: 8);
+          subTitle = Opacity(
+            opacity: subTitleOpacity,
+            child: Transform(
+              alignment: Alignment.center,
+              transform: subTitleScaleTransform,
+              child: DefaultTextStyle(
+                style: titleStyle,
+                child: widget.subTitle!,
+              ),
+            ),
+          );
+        }
         final double opacity = settings.toolbarOpacity;
         if (opacity > 0.0) {
           TextStyle titleStyle = theme.primaryTextTheme.headline5!;
@@ -196,7 +258,7 @@ class _HomeHeaderForegroundBarState extends State<HomeHeaderForegroundBar> {
             bottom: 0.0,
           );
           final double scaleValue =
-              Tween<double>(begin: 1.5, end: 1.0).transform(t);
+              Tween<double>(begin: 2.0, end: 1.0).transform(t);
           final Matrix4 scaleTransform = Matrix4.identity()
             ..scale(scaleValue, scaleValue, 1.0);
 
@@ -217,7 +279,7 @@ class _HomeHeaderForegroundBarState extends State<HomeHeaderForegroundBar> {
                       alignment: titleAlignment,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [title!,subTitle!],
+                        children: [title!, subTitle!],
                       ),
                     );
                   }),

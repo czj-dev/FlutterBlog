@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blog/style/theme/application_theme_data.dart';
 import 'package:flutter_blog/style/theme/markdown_theme_data.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 import 'codeviewer/code_style.dart';
 import 'codeviewer/prehighlighter.dart';
@@ -97,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           constantStyle: TextStyle(color: const Color(0xFFFF8383)),
           child: Container(),
         )),
-        data: data ?? "loading...",
+        data: data ,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
